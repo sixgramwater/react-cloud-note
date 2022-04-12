@@ -1,0 +1,88 @@
+.sidebar {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background: #f9fafb;
+  box-shadow: -2px 0 4px rgb(0 0 0 / 2%);
+
+  .sidebarInner {
+    padding-top: 32px;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .siderHeader {
+    .personalContainer {
+      display: flex;
+      flex-direction: column;
+    }
+    .avatarConatiner {
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      // width: 60px;
+      
+      .avatar {
+        height: 60px;
+        width: 60px;
+        overflow: hidden;
+        border-radius: 30px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    .nameContainer {
+      margin-top: 8px;
+      text-align: center;
+      color: #7a8599;
+      font-size: 14px;
+    }
+  }
+
+  .siderLayout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+    .operator {
+      // box-sizing: content-box;
+      padding: 10px 0;
+      height: 60px;
+      // height: 40px;
+      text-align: center;
+    }
+
+    .nav {
+      flex: 1;
+    }
+  }
+}
+
+.btn {
+  margin: 0 32px 12px;
+  .button {
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    height: 36px;
+    // height: 40px;
+    background: #5B89FE;
+    // font-size: 15px;
+    span {
+      margin: 0 5px;
+      // font-size: 16px;
+    }
+    svg {
+      font-size: 15px;
+    }
+    &:hover{
+      background: #7098fe;
+    }
+  }
+}

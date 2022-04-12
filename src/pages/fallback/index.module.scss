@@ -1,0 +1,12 @@
+.fallback {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 72px;
+  }
+}

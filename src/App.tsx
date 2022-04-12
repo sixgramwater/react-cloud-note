@@ -1,24 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import "antd/dist/antd.css";
+// import { Layout } from 'antd';
+import { Routes, Route } from 'react-router-dom';
+import ListDetail from './pages/listDetail';
+import Detail from './pages/detail';
+import Layout from './Layout';
+
+const Login = () => {
+  return (
+    <div className="login">
+      login
+    </div>
+  )
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/" element={<Layout/>}>
+          {/* <Route path=":" */}
+          <Route path=":entryId" element={<ListDetail/>}>
+            <Route path=":fileId" element={<Detail/>} />
+          </Route>
+        </Route>
+      </Routes>
+      {/* <div className="main-container">
+        <Layout/>
+      </div> */}
     </div>
   );
 }

@@ -1,0 +1,61 @@
+
+
+.listItem {
+  display: flex;
+  flex-direction: column;
+  margin: 0 11px 0 12px;
+  padding: 15px 8px;
+  border-radius: 4px;
+  transition: 0.2s all ease;
+  
+  .title {
+    display: flex;
+    height: 22px;
+    align-items: center;
+    user-select: none;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+    .folderIcon {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      color: #ffbb49;
+      font-size: 20px;
+    }
+    .filename {
+      // font-size: 16px;
+      flex: 1;
+      padding-left: 10px;
+    }
+
+    .filemore {
+      border-radius: 4px;
+      display: none;
+      // display: flex;
+      justify-content: center;
+      cursor: pointer;
+      padding: 2px;
+      transform: rotate(90deg);
+      &:hover {
+        background-color: #e1e6ed;
+      }
+    }
+  }
+
+  &:hover {
+    background-color: #f4f6f7;
+    .filemore {
+      display: flex;
+    }
+  }
+
+  .dateSize {
+    user-select: none;
+    color: #a9b2c2;
+    height: 20px;
+    margin: 4px 0 0 30px;
+  }
+}

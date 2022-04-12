@@ -1,0 +1,14 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  .listSearch {
+    height: 72px;
+    display: flex;
+    align-items: center;
+  }
+
+  .listDetail {
+    flex: 1;
+    
+  }
+}

@@ -1,0 +1,27 @@
+.btn {
+  line-height: 28px;
+  text-align: center;
+  overflow: hidden;
+  width: 60px;
+  height: 28px;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: #f0f3f5;
+  color: #4e5a70;
+  // .default {
+  //   background-color: #f0f3f5;
+  //   color: #4e5a70;
+  // }
+  transition: background-color 0.2s ease;
+  &.primary {
+    background-color: #5b89fe;
+    color: #fff;
+  }
+  
+  &:hover {
+    &.primary {
+      background-color: #7098fe;
+    }
+  }
+  // padding: ;
+}

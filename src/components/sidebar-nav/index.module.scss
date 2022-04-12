@@ -1,0 +1,120 @@
+.navlist {
+  height: 100%;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  .navItem {
+    color: #4e5a70;
+    cursor: pointer;
+    // font-size: 15px;
+    padding: 0 10px 0 42px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    transition: background-color 0.2s ease;
+      &:hover {
+        background: #f0f3f5;
+      }
+    .icon {
+      
+      vertical-align: middle;
+      // line-height: 36px;
+      display: flex;
+      align-items: center;
+    }
+    .navItemContent {
+      flex: 1;
+      font-size: 14px;
+      // display: inline-block;
+      height: 36px;
+      vertical-align: middle;
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      
+    }
+  }
+
+  .navTree {
+    padding: 0;
+    .navTreeItem {
+      display: flex;
+      color: #4e5a70;
+      // padding: 0 10px 0 0px;
+      height: 36px;
+      align-items: center;
+      width: 100%;
+      // font-size: 18px;
+
+      .icon {
+        vertical-align: middle;
+        font-size: 18px;
+        // line-height: 36px;
+        display: flex;
+        align-items: center;
+      }
+      .navItemContent {
+        flex: 1;
+        font-size: 14px;
+        // display: inline-block;
+        height: 36px;
+        vertical-align: middle;
+        margin-left: 8px;
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        width: 100%;
+      }
+      // &:hover {
+        
+      // }
+    }
+  }
+}
+
+:global {
+  .ant-tree-switcher {
+    line-height: 36px !important;
+  }
+  .ant-tree {
+    background-color: #f9fafb;
+    // padding-left: 14px;
+    .ant-tree-node-content-wrapper {
+      width: 100%;
+    }
+    .ant-tree-node-selected {
+      // background-color: #f9fafb !important;
+      // background-color: #f9fafb;
+    }
+    .ant-tree-treenode {
+      height: 36px;
+      width: 100%;
+      padding-left: 14px;
+      // margin-left: -14px;
+      background-color: #f9fafb;
+      &:hover {
+        background-color: #f0f3f5;
+      }
+      transition: 200ms background-color ease;
+      &.ant-tree-treenode-selected {
+        background-color: #f0f3f5 !important;
+        // color: #5b89fe;
+        .ant-tree-node-selected {
+          background-color: #f0f3f5 !important;
+          .ant-tree-title {
+            color: #5b89fe;
+          }
+          // background-color: #f9fafb;
+        }
+      }
+    }
+    
+  }
+
+  
+}
+

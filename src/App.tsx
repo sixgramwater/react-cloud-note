@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import "antd/dist/antd.css";
+import '@icon-park/react/styles/index.css';
 // import { Layout } from 'antd';
 import { Routes, Route } from 'react-router-dom';
 import ListDetail from './pages/listDetail';

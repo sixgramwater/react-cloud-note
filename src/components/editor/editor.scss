@@ -1,0 +1,45 @@
+@import 'codemirror/lib/codemirror.css';
+
+$max-width: 800px;
+
+
+.CodeMirror,
+code,
+kbd {
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+}
+
+/* Force content-box sizing for the elements where we expect it */
+.CodeMirror-scroll,
+.CodeMirror-sizer,
+.CodeMirror-gutter,
+.CodeMirror-gutters,
+.CodeMirror-linenumber {
+  box-sizing: content-box;
+}
+
+.CodeMirror {
+  height: 100%;
+  font-size: 14px;
+  line-height: 1.5;
+  // height: 500px !important;
+  // margin-top: 0;
+  // overflow-y: scroll !important;
+  .CodeMirror-scroll {
+    // height: 400px;
+    overflow-x: hidden;
+  }
+
+  pre.CodeMirror-placeholder {
+    // color: $gray-400;
+  }
+  .CodeMirror-lines {
+    max-width: $max-width;
+    margin: 0 auto;
+    padding: 16px 0;
+  }
+  pre.CodeMirror-line,
+  pre.CodeMirror-line-like {
+    padding: 0 20px;
+  }
+}

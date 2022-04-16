@@ -6,6 +6,7 @@ import styles from './index.module.scss';
 import TitleInput from './titleInput';
 import { AiOutlineMore } from 'react-icons/ai';
 import Fallback from '../fallback';
+import Editor from '../../components/editor';
 
 const Detail = () => {
   const { fileId } = useParams();
@@ -45,7 +46,8 @@ const Detail = () => {
         </div>
       </div>
       <div className={styles.content}>
-        <Fallback/>
+        {/* <Fallback/> */}
+        <Editor/>
         {/* <MdEditor/> */}
       </div>
       {/* {fileId} */}

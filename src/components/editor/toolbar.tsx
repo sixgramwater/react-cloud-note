@@ -76,14 +76,39 @@ import cx from 'classnames';
 //   );
 
 export interface ToolbarProps {
+  activeTab: 'default'|'preview'|'write'
   onCommand?: (command: string) => void;
+  onInsertPicture?: (file: File) => void;
+  onChangeActiveTab: (tab: 'default'|'preview'|'write') => void;
 }
 
 const Toolbar: React.FC<ToolbarProps> = (props) => {
-  const { onCommand } = props;
+  const { onCommand, onInsertPicture, activeTab, onChangeActiveTab } = props;
   const handleClick = (command: string) => {
     // console.log(e.target);
     onCommand && onCommand(command);
+  }
+  const handleClickImage = () => {
+    const fileInputEl = document.createElement('input');
+    fileInputEl.setAttribute('type', 'file');
+    fileInputEl.setAttribute('id', 'fileInput');
+    fileInputEl.setAttribute('style', 'visibility:hidden;position:absolute;z-index:-1;height:0;');
+    document.body.appendChild(fileInputEl);
+    if(!onInsertPicture)  return;
+    fileInputEl.onchange = (e) => {
+      const file = fileInputEl.files![0];
+      onInsertPicture(file);
+    }
+    fileInputEl.click();
+
+  }
+  const handleChangeActiveTab = (tab: 'default'|'preview'|'write') => {
+    if(!onChangeActiveTab)  return;
+    if(tab === activeTab) {
+      onChangeActiveTab('default')
+    } else {
+      onChangeActiveTab(tab);
+    }
   }
   return (
     <div className={styles.mdToolbar}>
@@ -134,7 +159,7 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
             <CodeBrackets theme="outline" size="24" fill="#333" />
           </Tooltip>
         </div>
-        <div className={styles.toolbarIcon} >
+        <div className={styles.toolbarIcon} onClick={()=>handleClickImage()}>
           <Tooltip title="Picture">
             <Picture theme="outline" size="24" fill="#333" />
           </Tooltip>
@@ -156,12 +181,12 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
         </div>
       </div>
       <div className={cx(styles.mdToolbarInner, styles.mdToolbarRight)}>
-        <div className={styles.toolbarIcon}>
+        <div className={cx(styles.toolbarIcon, {[styles.active]:activeTab === 'write'} )} onClick={()=>handleChangeActiveTab('write')}>
           <Tooltip title="Write only">
             <LeftExpand theme="outline" size="24" fill="#333"/>
           </Tooltip>
         </div>
-        <div className={styles.toolbarIcon}>
+        <div className={cx(styles.toolbarIcon, {[styles.active]:activeTab === 'preview'} )} onClick={()=>handleChangeActiveTab('preview')}>
           <Tooltip title="Preview only">
             <RightExpand theme="outline" size="24" fill="#333"/>
           </Tooltip>

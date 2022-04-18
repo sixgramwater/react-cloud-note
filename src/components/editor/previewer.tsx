@@ -45,7 +45,7 @@ const Preview: React.FC<PreviewProps> = (props) => {
   useLayoutEffect(() => {
     if(!preRef.current)  return;
     // console.log('trigger')
-    const els = document.querySelectorAll<HTMLElement>('pre>code');
+    const els = preRef.current.querySelectorAll<HTMLElement>('pre>code');
     if(els.length === 0)  return;
     // if(!hljsRef.current) {
     //   import('highlight.js').then(hljs => {
@@ -70,9 +70,9 @@ const Preview: React.FC<PreviewProps> = (props) => {
 
   }, [value])
   return (
-    <div className={styles.mdPreview} style={style} ref={preRef}>
-      <div className={cx(styles.mdContent, 'markdown-body')} dangerouslySetInnerHTML={{__html: `${html}`}}></div>
-    </div>
+    // <div className={styles.mdPreview} style={style} >
+    <div className={cx(styles.mdContent, 'markdown-body')} ref={preRef} dangerouslySetInnerHTML={{__html: `${html}`}}></div>
+    // </div>
   )
 }
 

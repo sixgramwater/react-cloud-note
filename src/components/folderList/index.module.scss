@@ -7,7 +7,22 @@
   padding: 15px 8px;
   border-radius: 4px;
   transition: 0.2s all ease;
-  
+  border-top: 1px solid #f0f3f5;
+  &:first-of-type {
+    border-top: 1px solid #fff;
+  }
+  &:last-of-type {
+    border-bottom: 1px solid #f0f3f5;
+  }
+  &.active {
+    border-top: 1px solid #fff;
+    border-radius: 4px;
+    background-color: #f4f6f7;
+    & + li {
+      border-top: 1px solid #fff !important;
+    }
+    // background-color: ;
+  }
   .title {
     display: flex;
     height: 22px;

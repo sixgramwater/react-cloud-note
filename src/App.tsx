@@ -24,7 +24,8 @@ function App() {
         <Route path="/" element={<Layout/>}>
           {/* <Route path=":" */}
           <Route path=":entryId" element={<ListDetail/>}>
-            <Route path=":fileId" element={<Detail/>} />
+            <Route path=":fileType/:fileId" element={<Detail/>} />
+            {/* <Route path=":fileType/:fileId" element={<Detail/>} /> */}
           </Route>
         </Route>
       </Routes>

@@ -9,7 +9,7 @@ type EntryType = {
   name: string,
   dir: boolean,
   type: number,
-  createTime: number,
+  created: number,
   fileId: string,
 }
 
@@ -34,9 +34,9 @@ const ListItem: React.FC<EntryType> = (props) => {
     dir,
     type,
     fileId,
-    createTime
+    created
   } = props;
-  const { entryId } = useParams();
+  const { entryId, fileId: fId } = useParams();
   const navigate = useNavigate();
   const renderListIcon = (type: number) => {
     // const label = typeToName[type].label;
@@ -56,10 +56,23 @@ const ListItem: React.FC<EntryType> = (props) => {
   }
 
   const handleClick = () => {
-    navigate(`/${entryId}/${fileId}`)
+    if(dir) {
+      navigate(`/${entryId}/dir/${fileId}`)
+    } else {
+      navigate(`/${entryId}/markdown/${fileId}`)
+    }
   }
+
+  const handleDBClick = () => {
+    if(!dir)  return;
+    navigate(`/${fileId}/`);
+  }
+
+  const listItemClass = cx(styles.listItem, {
+    [styles.active]: fId === fileId
+  })
   return (
-    <div className={styles.listItem} onClick={handleClick}>
+    <div className={listItemClass} onClick={handleClick} onDoubleClick={handleDBClick}>
       <div className={styles.title}>
         <div className={styles.icon}>
           {
@@ -74,7 +87,7 @@ const ListItem: React.FC<EntryType> = (props) => {
       </div>
       <div className={styles.dateSize}>
         <span className={styles.fileDate}>
-          {timeFormat(createTime)}
+          {timeFormat(created)}
         </span>
       </div>
     </div>

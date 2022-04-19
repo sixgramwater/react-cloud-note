@@ -3,19 +3,20 @@ import styles from './index.module.scss';
 import ListItem from './listItem';
 
 export interface IFolerListProps {
-  list: EntryType[]
+  list?: EntryType[],
 }
 
 export type EntryType = {
   name: string,
   dir: boolean,
   type: number,
-  createTime: number,
+  created: number,
   fileId: string,
 }
 
-const FolderList = () => {
-  const list = [
+const FolderList: React.FC<IFolerListProps> = (props) => {
+  const {list} = props;
+  const list2 = [
     {
       name: '学习',
       dir: true,
@@ -57,7 +58,7 @@ const FolderList = () => {
   return (
     <div className={styles.folderList}>
       {
-        list.map(item => (
+        list?.map(item => (
           <ListItem {...item} key={item.fileId}/>
         ))
       }

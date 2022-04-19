@@ -21,7 +21,7 @@
       display: flex;
       justify-content: center;
       // width: 60px;
-      
+
       .avatar {
         height: 60px;
         width: 60px;
@@ -63,6 +63,7 @@
 
 .btn {
   margin: 0 32px 12px;
+  position: relative;
   .button {
     cursor: pointer;
     border-radius: 4px;
@@ -72,7 +73,7 @@
     color: #fff;
     height: 36px;
     // height: 40px;
-    background: #5B89FE;
+    background: #5b89fe;
     // font-size: 15px;
     span {
       margin: 0 5px;
@@ -81,8 +82,63 @@
     svg {
       font-size: 15px;
     }
-    &:hover{
+    &:hover {
       background: #7098fe;
     }
   }
+}
+
+.createDropdown {
+  position: absolute;
+  // background-color: #fff;
+  top: 44px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  opacity: 0;
+  display: none;
+  &.show {
+    opacity: 1;
+    display: flex;
+  }
+  .menu {
+    // transform: translateX(50%);
+    // left: 120px;
+    background-color: #fff;
+    width: 160px;
+    box-shadow: 0 0 16px rgb(0 0 0 / 12%);
+    padding: 8px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    .menuItem {
+      width: 100%;
+      display: flex;
+      height: 40px;
+      border-radius: 4px;
+      align-items: center;
+      padding-left: 10px;
+      cursor: pointer;
+      transition: 200ms ease background-color;
+
+      &:hover {
+        background-color: #f9fafb;
+      }
+
+      .icon {
+        width: 22px;
+        height: 22px;
+        margin-right: 9px;
+      }
+      span {
+        flex: 1;
+        text-align: left;
+        font-size: 14px;
+        color: #4e5a70;
+        user-select: none;
+      }
+    }
+  }
+
+  // display: ;
 }

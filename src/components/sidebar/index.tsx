@@ -11,7 +11,7 @@ const Sidebar = () => {
     console.log(showModal);
   };
   const [showModal, setShowModal] = useState(false);
-  const avatarImg = "https://note.youdao.com/web/images/dummy_user.jpg";
+  const avatarImg = "http://124.220.0.95:9999/document/2022/04/18/ad6ac38e61485a0679f1b36edd0b254c.png";
   return (
     <div className={styles.sidebar}>
       <div className={styles.sidebarInner}>

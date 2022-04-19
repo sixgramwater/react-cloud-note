@@ -56,7 +56,10 @@ const Editor: React.FC<EditorProps> = (props) => {
   let cmRef = useRef<cmInstance>();
   const hastRef = useRef<any>();
   const vfileRef = useRef();
+  const curBlockIndexRef = useRef<Number>(0);
   const posRef = useRef<PosRefType>();
+  const editCalledRef = useRef<Boolean>(false);
+  const previewCalledRef = useRef<Boolean>(false);
   const [editorHeight, setEditorHeight] = useState(400);
   const [input, setInput] = useState(placeholder ?? mdValue);
   const [activeTab, setActiveTab] = useState<"default" | "write" | "preview">(
@@ -92,6 +95,9 @@ const Editor: React.FC<EditorProps> = (props) => {
     cmRef.current.on("drop", async (_, e) =>
       handleImages(e, e.dataTransfer?.items)
     );
+    previewRef.current?.addEventListener("scroll", handlePreviewScroll, {
+      passive: true,
+    });
     // cmRef.current.addKeyMap()
     console.log("listen");
   }, []);
@@ -156,12 +162,16 @@ const Editor: React.FC<EditorProps> = (props) => {
     setActiveTab(tab);
   };
   const handleEditorScroll = throttleByTimestamp(() => {
-    console.log("scroll");
+    // console.log("scroll");
     if (!cmRef.current || !previewRef.current) return;
+    if (previewCalledRef.current) {
+      previewCalledRef.current = false;
+      return;
+    }
     updateBlockPostiton();
     const info = cmRef.current!.getScrollInfo();
     const leftRatio = info.top / (info.height - info.clientHeight);
-    console.log(leftRatio);
+    // console.log(leftRatio);
     const startIndex = findStartIndex(leftRatio, posRef.current!.editPos);
     const editPs = posRef.current!.editPos;
     const previewPs = posRef.current!.previewPos;
@@ -171,16 +181,51 @@ const Editor: React.FC<EditorProps> = (props) => {
         (previewPs[startIndex + 1] - previewPs[startIndex])) /
         (editPs[startIndex + 1] - editPs[startIndex]) +
       previewPs[startIndex];
-    console.log(rightRatio);
+    // console.log(rightRatio);
     previewRef.current!.scrollTo(
       0,
       rightRatio *
         (previewRef.current!.scrollHeight - previewRef.current!.clientHeight)
     );
-  }, 500);
+    editCalledRef.current = true;
+  }, 0);
+  const handlePreviewScroll = throttleByTimestamp(() => {
+    // console.log("scroll");
+    if (!cmRef.current || !previewRef.current || !posRef.current) return;
+    updateBlockPostiton();
+    curBlockIndexRef.current = findStartIndex(
+      previewRef.current.scrollTop /
+        (previewRef.current.scrollHeight - previewRef.current.offsetHeight),
+      posRef.current.previewPos
+    );
 
-  const updateBlockPostiton = () => {
-    console.log("before upload");
+    if (editCalledRef.current) {
+      editCalledRef.current = false;
+      return;
+    }
+
+    const rightRatio =
+      previewRef.current.scrollTop /
+      (previewRef.current.scrollHeight - previewRef.current.clientHeight);
+    const startIndex = findStartIndex(rightRatio, posRef.current.previewPos);
+
+    const leftRatio =
+      ((rightRatio - posRef.current.previewPos[startIndex]) *
+        (posRef.current.editPos[startIndex + 1] -
+          posRef.current.editPos[startIndex])) /
+        (posRef.current.previewPos[startIndex + 1] -
+          posRef.current.previewPos[startIndex]) +
+      posRef.current.editPos[startIndex];
+
+    if (isNaN(leftRatio)) {
+      return;
+    }
+
+    const info = cmRef.current.getScrollInfo();
+    cmRef.current.scrollTo(0, leftRatio * (info.height - info.clientHeight));
+    previewCalledRef.current = true;
+  }, 0);
+  const updateBlockPostiton = throttleByTimestamp(() => {
     if (!cmRef.current || !previewRef.current || !hastRef.current) return;
 
     posRef.current = {
@@ -223,7 +268,7 @@ const Editor: React.FC<EditorProps> = (props) => {
     posRef.current.editPos.push(1);
     posRef.current.previewPos.push(1);
     console.log(posRef.current);
-  };
+  }, 1000);
 
   const handleCommand = (command: string) => {
     if (!cmRef.current) return;
@@ -442,7 +487,10 @@ const Editor: React.FC<EditorProps> = (props) => {
       value: mdValue,
       mode: "markdown",
       lineWrapping: true,
-      tabSize: 2,
+      tabSize: 4,
+      indentUnit: 4,
+      indentWithTabs: false,
+      smartIndent: true,
     });
     cmRef.current.on("change", (ins) => {
       // console.log(ins.getValue())

@@ -4,7 +4,9 @@ import styles from './index.module.scss';
 import { getProcessor } from './process';
 import './preview.scss';
 import type H from 'highlight.js';
-import hljs from 'highlight.js';
+// import hljs from 'highlight.js';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
 import 'github-markdown-css';
 import type { Plugin } from 'unified'
 // import 'highlight.js/styles/github.css';
@@ -15,6 +17,8 @@ export interface PreviewProps {
   style?: CSSProperties;
   onHast?: (tree: any, file: any) => void;
 }
+hljs.registerLanguage('javascript', javascript);
+
 const Preview: React.FC<PreviewProps> = (props) => {
   const { value, style, onHast } = props;
   // const [parsedStr, setParsedStr] = useState('');

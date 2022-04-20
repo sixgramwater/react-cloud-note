@@ -22,6 +22,9 @@ export interface AppState {
   user: userType | undefined;
   path: String[];
   rootEntryId: string | undefined;
+  userToken: string | null;
+  curEntryItem: entryItem | undefined;
+  curEntryList: entryItem[];
 }
 
 const initialState: AppState = {
@@ -29,6 +32,9 @@ const initialState: AppState = {
   user: undefined,
   path: [],
   rootEntryId: undefined,
+  userToken: localStorage.getItem('token'),
+  curEntryItem: undefined,
+  curEntryList: [],
 }
 
 const appSlice = createSlice({
@@ -59,6 +65,25 @@ const appSlice = createSlice({
     setRootEntryId(state, action) {
       const rootEntryId = action.payload;
       state.rootEntryId = rootEntryId;
+    },
+    setUser(state, action) {
+      state.user = action.payload;
+    },
+    setToken(state, action) {
+      state.userToken = action.payload;
+    },
+    removeToken(state, action) {
+      state.userToken = null;
+      localStorage.removeItem('token');
+    },
+    setCurEntryItem(state, action) {
+      state.curEntryItem = action.payload;
+    },
+    setCurEntryList(state, action) {
+      state.curEntryList = action.payload;
+    },
+    addCurEntryList(state, action) {
+      state.curEntryList.push(action.payload);
     }
   }
 })

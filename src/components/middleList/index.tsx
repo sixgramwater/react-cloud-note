@@ -13,67 +13,71 @@ import EmptyFolder from "./empty";
 const MiddleList = () => {
   const { entryId } = useParams();
   const rootEntryId = useAppSelector((state) => state.app.rootEntryId);
+  const curEntryItem = useAppSelector(state=>state.app.curEntryItem);
+  const curEntryList = useAppSelector(state=>state.app.curEntryList);
   const [list, setList] = useState([]);
   const [currentEntryItem, setCurrentEntryItem] = useState<entryItem>();
   const showBackButton = entryId !== rootEntryId;
-
+  const navigate = useNavigate();
   // const currentEntryItem = useAppSelector(state=>state.app.entryList.find(entry=>entry.fileId === entryId))
   // const [no]
   // console.log(currentEntryItem);
-  const folderName = entryId === rootEntryId ? '我的文件夹': currentEntryItem?.name
-  const isEmpty = list.length === 0;
+  // const folderName = entryId === rootEntryId ? '我的文件夹': currentEntryItem?.name
+  const folderName = entryId === rootEntryId ? '我的文件夹': curEntryItem?.name
+  // const isEmpty = list.length === 0;
+  const isEmpty = curEntryList.length === 0;
   const dispatch = useAppDispatch();
   const navi = useNavigate();
   useEffect(() => {
-    if(!entryId) return;
-    fetchEntryById(entryId).then(value => {
-      setCurrentEntryItem(value);
-      dispatch({
-        type: 'app/addEntryItem',
-        payload: value,
+    if(!entryId) {
+      if(rootEntryId)
+      navigate(`/${rootEntryId}`)
+    } else {
+      fetchEntryById(entryId).then(value => {
+        dispatch({
+          type: 'app/setCurEntryItem',
+          payload: value,
+        })
+        setCurrentEntryItem(value);
+        // dispatch({
+        //   type: 'app/addEntryItem',
+        //   payload: value,
+        // })
+        // console.log(value);
+      }).catch(err => {
+        console.log(err);
       })
-      // console.log(value);
-    }).catch(err => {
-      console.log(err);
-    })
-  }, [entryId])
+    }
+  }, [entryId, rootEntryId, dispatch, navigate])
   useEffect(() => {
     if (!entryId) return;
     listPageByParentId(entryId)
       .then((value) => {
         const { count, entries } = value;
         console.log(entries);
-
-        // if (count === 0) {
-
-        //   // console.log("empty");
-        //   return;
-        // }
-        let mappedEntries = entries.map((entry: entryItem) => {
-          return {
-            ...entry,
-            type: entry.dir === true ? 0 : 1,
-          };
-        });
-        mappedEntries.forEach((entry: entryItem) => {
-          dispatch({
-            type: "app/addEntryItem",
-            payload: entry,
-          });
-        });
-        setList(mappedEntries);
+        
+        dispatch({
+          type: 'app/setCurEntryList',
+          payload: entries,
+        })
+        // setList(mappedEntries);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [entryId]);
   const handleClickBack = () => {
-    if(!currentEntryItem)  return;
-    const { parentId } = currentEntryItem;
+    // if(!currentEntryItem)  return;
+    // const { parentId } = currentEntryItem;
+    // if(!parentId)  return;
+    // console.log(parentId);
+    // navi(`/${parentId}/`);
+    if(!curEntryItem)  return;
+    const { parentId } = curEntryItem;
     if(!parentId)  return;
     console.log(parentId);
     navi(`/${parentId}/`);
-    // if()
+
   };
   // const [entryList, setEntryList] =
   // const { data, isLoading } = useQuery(
@@ -106,7 +110,8 @@ const MiddleList = () => {
             <EmptyFolder />
           ) : (
             <FolderList
-              list={list}
+              list={curEntryList as any}
+              // list={list}
               // list={list}
               // showBackButton={rootEntryId === entryId}
               // onBack={handleBack}

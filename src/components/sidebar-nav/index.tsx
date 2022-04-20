@@ -23,10 +23,10 @@ const Nav = () => {
         <AiOutlineStar className={styles.icon}/>
         <div className={styles.navItemContent}>收藏</div>
       </div>
-      <div className={styles.navItem}>
+      {/* <div className={styles.navItem}>
         <AiOutlineFolder className={styles.icon}/>
         <div className={styles.navItemContent}>我的文件夹</div>
-      </div>
+      </div> */}
       <div className={styles.navTree}>
         <DictTree
           titleRender={titleRender}

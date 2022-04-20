@@ -28,16 +28,39 @@ export const register = (username: string, password: string) =>
 export const fetchRootEntryContent = () =>
   ins.get("/file?method=listPageByRoot").then((res) => res.data);
 
-export const fetchRootEntry = () => ins.get('/file').then(res => res.data);
-
+export const fetchRootEntry = () => ins.get("/file").then((res) => res.data);
 
 export const listPageByParentId = (entryId: string) =>
   ins.get(`/file/${entryId}?method=listPageByParentId`).then((res) => res.data);
 
-
-export const fetchEntryById = (entryId: string) =>  
+export const fetchEntryById = (entryId: string) =>
   ins.get(`/file/${entryId}?method=listById`).then((res) => res.data);
 
+export const fetchUserProfile = () =>
+  ins.get(`/users/profile`).then((res) => res.data);
+
+type entryType = {
+  type: number;
+  fileId: string;
+  name: string;
+  parentId: string;
+  dir: boolean;
+};
+
+export const createEntryItem = ({
+  type,
+  fileId,
+  name,
+  parentId,
+  dir,
+}: entryType) =>
+  ins
+    .post(`/file`, { type, fileId, name, parentId, dir })
+    .then((res) => res.data);
+
+export const updateEntryName = () => {
+  
+}
 
 export const createFile = (
   name: string,

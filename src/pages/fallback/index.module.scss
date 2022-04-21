@@ -2,6 +2,9 @@
   width: 100%;
   height: 100%;
   position: relative;
+  &.hasBorder {
+    border-left: 1px solid #eceff4;
+  }
   .icon {
     position: absolute;
     top: 50%;

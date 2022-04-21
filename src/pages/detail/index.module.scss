@@ -16,8 +16,15 @@
         height: 100%;
         display: flex;
         align-items: center;
+        font-size: 24px;
+        color: #232d47;
+        span {
+          padding: 1px 2px;
+        }
+
         .input {
           min-width: 0;
+          padding-left: 1px;
           height: 100%;
           outline: none;
           font-size: 24px;

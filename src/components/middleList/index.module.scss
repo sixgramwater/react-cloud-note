@@ -1,14 +1,67 @@
 .list {
   display: flex;
   flex-direction: column;
+  height: 100%;
+
   .listSearch {
     height: 72px;
     display: flex;
     align-items: center;
   }
-
+  .listHeader {
+    position: relative;
+    color: #232d47;
+    margin: 8px 0 4px;
+    height: 24px;
+    .icon {
+      position: absolute;
+      // top: 50%;
+      width: 20px;
+      height: 20px;
+      left: 12px;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .pathName {
+      text-align: center;
+      color: #232d47;
+      font-weight: bold;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      opacity: 0.8;
+    }
+  }
   .listDetail {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     
+  }
+
+  .listView {
+    flex: 1;
+    // height: 100%;
+  }
+  .emptyFolder {
+    height: 100%;
+    position: relative;
+    .emptyContent {
+      width: 100px;
+      height: 200px;
+      // height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+
+    }
+    .text {
+      display: inline-block;
+      text-align: center;
+      line-height: 24px;
+      color: #7a8599;
+      margin-bottom: 24px;
+    }
   }
 }

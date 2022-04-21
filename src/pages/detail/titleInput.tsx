@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useRef, useState } from 'react';
 import styles from './index.module.scss';
 
 export interface ITitleInputProps {
@@ -14,7 +14,8 @@ const TitleInput: React.FC<ITitleInputProps> = (props) => {
     defaultValue,
   } = props;
 
-  const [input, setInput] = useState(defaultValue ? defaultValue : '');
+  const [input, setInput] = useState(defaultValue ?? '');
+  const inputRef = useRef<HTMLInputElement>(null)
   const handleChange = (e: any) => {
     setInput(e.target.value);
     onChange && onChange(e.target.value);
@@ -32,11 +33,14 @@ const TitleInput: React.FC<ITitleInputProps> = (props) => {
       <form className={styles.inputForm}>
         <input 
           type="text" 
-          value={input} 
+          // value={input} 
           className={styles.input}
           onChange={handleChange}
           onBlur={handleBlur}
           onFocus={handleFocus}
+          defaultValue={defaultValue}
+          ref={inputRef}
+          autoFocus
         />
       </form>
     </div>
@@ -44,3 +48,4 @@ const TitleInput: React.FC<ITitleInputProps> = (props) => {
 }
 
 export default TitleInput;
+

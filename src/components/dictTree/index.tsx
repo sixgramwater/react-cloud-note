@@ -17,7 +17,7 @@ interface DataNode {
 
 export interface IDictTreeProps {
   titleRender?: (nodeData: any) => React.ReactNode;
-  onSelect?: () => void;
+  onSelect?: (keys: string) => void;
 }
 const intialData = [
   {
@@ -37,6 +37,7 @@ const DictTree: React.FC<IDictTreeProps> = (props) => {
     if(keys.length === 0)  return;
     const fileId = keys[0] === '0' ? rootEntryId : keys[0];
     navigate(`/${fileId}/`)
+    onSelect && onSelect(fileId);
     // console.log(keys);
   }
   const updateTreeData = (

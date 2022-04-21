@@ -39,6 +39,9 @@ export const fetchEntryById = (entryId: string) =>
 export const fetchUserProfile = () =>
   ins.get(`/users/profile`).then((res) => res.data);
 
+export const fetchRecent = () =>
+  ins.get("/file/recent").then((res) => res.data);
+
 type entryType = {
   type: number;
   fileId: string;
@@ -58,9 +61,7 @@ export const createEntryItem = ({
     .post(`/file`, { type, fileId, name, parentId, dir })
     .then((res) => res.data);
 
-export const updateEntryName = () => {
-  
-}
+export const updateEntryName = () => {};
 
 export const createFile = (
   name: string,

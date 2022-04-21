@@ -11,6 +11,7 @@ import { fetchUserProfile } from './api';
 import { useAppDispatch, useAppSelector } from './hooks';
 import Login from './pages/login';
 import Fallback from './pages/fallback';
+import RecentListDetail from './pages/listDetail/recentListDetail';
 
 // const Login = () => {
 //   return (
@@ -51,6 +52,10 @@ function App() {
         <Route path="/" element={isAuth ? <Layout/> : <Navigate to='/login'/>}>
           {/* <Route path=":" */}
           <Route index element={<ListDetail />}></Route>
+          <Route path="recent" element={<RecentListDetail/>}>
+            <Route index element={<Fallback hasBorder/>}/>
+            <Route path=":fileType/:fileId" element={<Detail/>} />
+          </Route>
           <Route path=":entryId" element={<ListDetail/>}>
             <Route index element={<Fallback hasBorder/>}/>
             <Route path=":fileType/:fileId" element={<Detail/>} />

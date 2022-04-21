@@ -21,13 +21,11 @@ ins.interceptors.request.use((config) => {
 //   if(err.response) {
 //     switch(err.response.status) {
 //       case 401:
-
+//         console.log('401')
+//         localStorage.removeItem('token')
 //     }
 //   }
-//   // console.log(err);
-//   // if(res.status === 401) {
-//   //   console.log('unauth')
-//   // }
+  
 // })
 
 export default ins;

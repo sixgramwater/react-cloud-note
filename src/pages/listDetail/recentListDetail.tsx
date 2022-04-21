@@ -1,9 +1,9 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import MiddleList from "../../components/middleList";
+import RecentList from "../../components/middleList/recentList";
 import styles from "./index.module.scss";
 
-const ListDetail = () => {
+const RecentListDetail = () => {
   // const { pathname } = useLocation();
   // const type = pathname.split('/');
   // console.log(pathname.split('/')[1]);
@@ -11,7 +11,8 @@ const ListDetail = () => {
   return (
     <div className={styles.listDetail}>
       <div className={styles.list}>
-        <MiddleList />
+        <RecentList/>
+        {/* <MiddleList /> */}
       </div>
       <div className={styles.detailContainer}>
         <Outlet />
@@ -20,4 +21,4 @@ const ListDetail = () => {
   );
 };
 
-export default ListDetail;
+export default RecentListDetail;

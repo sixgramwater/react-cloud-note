@@ -23,6 +23,8 @@ import Preview from "./previewer";
 import { commandList } from "./command";
 import { imageUpload } from "../../api";
 import cx from "classnames";
+import { v4 } from "uuid";
+import { message } from "antd";
 
 type cmInstance = ReturnType<typeof CodeMirror>;
 
@@ -124,7 +126,7 @@ const Editor: React.FC<EditorProps> = (props) => {
     console.log(file);
     const fileFormData = new FormData();
     fileFormData.append("file", file);
-    fileFormData.append("md5", Math.random().toFixed(8));
+    fileFormData.append("md5", v4());
     imageUpload(fileFormData).then((res) => {
       if (res.code === "00000") {
         console.log(res.data);
@@ -133,10 +135,13 @@ const Editor: React.FC<EditorProps> = (props) => {
         let { ch, line } = cursor;
         cmRef.current!.setCursor({ ch: 0, line: line + 1 });
         cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
+        message.success('图片上传成功');
       } else {
         console.log(res.msg);
       }
-    });
+    }).catch(err => {
+      message.error('图片上传失败');
+    })
     // console.log(files);
     // imageUpload(itemList[0])
   };
@@ -144,7 +149,7 @@ const Editor: React.FC<EditorProps> = (props) => {
   const handleInsertPicture = (file: File) => {
     const fileFormData = new FormData();
     fileFormData.append("file", file);
-    fileFormData.append("md5", Math.random().toFixed(8));
+    fileFormData.append("md5", v4());
     imageUpload(fileFormData).then((res) => {
       if (res.code === "00000") {
         console.log(res.data);
@@ -153,10 +158,14 @@ const Editor: React.FC<EditorProps> = (props) => {
         let { ch, line } = cursor;
         cmRef.current!.setCursor({ ch: 0, line: line + 1 });
         cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
+        message.success('图片上传成功');
+
       } else {
         console.log(res.msg);
       }
-    });
+    }).catch(err => {
+      message.error('图片上传失败');
+    })
   };
   const handleChangeActiveTab = (tab: "default" | "write" | "preview") => {
     setActiveTab(tab);

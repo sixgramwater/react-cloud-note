@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import Button from "../../components/button";
 import MdEditor from "../../components/editor/mdEditor";
@@ -8,47 +8,105 @@ import { AiOutlineMore } from "react-icons/ai";
 import Fallback from "../fallback";
 import Editor from "../../components/editor";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { fetchEntryById } from "../../api";
+import { fetchEntryById, syncFileDownload, syncFilePush, updateEntryName } from "../../api";
 import { entryItem } from "../../store/appSlice";
+import { message } from "antd";
 
 const Detail = () => {
   const { fileId, fileType } = useParams();
   const [currentEntryItem, setCurrentEntryItem] = useState<entryItem>();
   const dispatch = useAppDispatch();
   const [showInput, setShowInput] = useState(false);
+  const bodyStringRef = useRef<string | null>();
+  const curEntryList = useAppSelector(state=>state.app.curEntryList);
+  const [initialBodyString, setInitialBodyString] = useState<
+    string | undefined
+  >();
+  // const [fileLoading, setFileLoading] = useState(false);
   useEffect(() => {
-    if(!fileId) return;
-    fetchEntryById(fileId).then(value => {
-      setCurrentEntryItem(value);
-      dispatch({
-        type: 'app/addEntryItem',
-        payload: value,
-      })
+    if (!fileId || !fileType) return;
+    syncFileDownload(fileId).then((value) => {
+      setInitialBodyString(value);
+      bodyStringRef.current = value;
       // console.log(value);
-    }).catch(err => {
-      console.log(err);
-    })
-  }, [fileId])
+    });
+    return () => {
+      setInitialBodyString(undefined);
+      bodyStringRef.current = null;
+    };
+  }, [fileId]);
+
+  useEffect(() => {
+    if (!fileId) return;
+    const item = curEntryList.find(item => item.fileId === fileId);
+    setCurrentEntryItem(item);
+    // fetchEntryById(fileId)
+    //   .then((value) => {
+    //     setCurrentEntryItem(value);
+    //     dispatch({
+    //       type: "app/addEntryItem",
+    //       payload: value,
+    //     });
+    //     // console.log(value);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }, [fileId, curEntryList]);
   // const currentEntryItem = useAppSelector((state) =>
   //   state.app.entryList
   // ).find(entry => entry.fileId === fileId);
 
-  console.log(currentEntryItem)
+  console.log(currentEntryItem);
   const handleClickTitle = () => {
     setShowInput(true);
-  }
+  };
   // const entryName = currentEntryItem ? currentEntryItem.name : 'error'
-  const [fileName, setFileName] = useState('');
+  const [fileName, setFileName] = useState("");
   useEffect(() => {
-    if(!currentEntryItem)  return;
+    if (!currentEntryItem) return;
     console.log(currentEntryItem.name);
     setFileName(currentEntryItem.name);
-  }, [currentEntryItem])
-  
+  }, [currentEntryItem]);
+
   const handleModifyTitle = (value: string) => {
-    console.log(value);
     setShowInput(false);
-    setFileName(value);
+    if(!fileId) return;
+    if(value === '') {
+      message.error('标题不能为空');
+      return;
+    }
+    // console.log(value);
+    
+    updateEntryName(fileId, value).then(res => {
+      dispatch({
+        type: 'app/updateCurEntryList',
+        payload: {
+          fileId,
+          name: value
+        }
+      })
+      setFileName(value);
+      message.success('修改成功');
+    }).catch(err => {
+      message.error('修改失败');
+    })
+  };
+
+  const handleChangeBodyString = useCallback((value: string) => {
+    bodyStringRef.current = value;
+  }, []);
+
+  const handleSave = () => {
+    if (!fileId || !bodyStringRef.current) return;
+    syncFilePush(fileId, bodyStringRef.current)
+      .then((value) => {
+        console.log(value);
+        message.success("保存成功");
+      })
+      .catch((err) => {
+        message.error("保存失败");
+      });
   };
   const isDir = fileType === "dir";
   return (
@@ -60,19 +118,18 @@ const Detail = () => {
           } */}
           {/* <TitleInput defaultValue={fileName} onBlur={handleModifyTitle} /> */}
           <div className={styles.titleContainer}>
-            {
-              !showInput ?
+            {!showInput ? (
               <span onClick={handleClickTitle}>{fileName}</span>
-              :
+            ) : (
               <TitleInput defaultValue={fileName} onBlur={handleModifyTitle} />
-            }
+            )}
             {/* <form className={styles.inputForm}>
               <input type="text" value={filename} className={styles.input}/>
             </form> */}
           </div>
         </div>
         <div className={styles.btnContainer}>
-          {!isDir && <Button>保存</Button>}
+          {!isDir && <Button onClick={handleSave}>保存</Button>}
 
           {/* <Button >
             保存
@@ -90,7 +147,14 @@ const Detail = () => {
       </div>
       <div className={styles.content}>
         {/* <Fallback/> */}
-        {isDir ? <Fallback /> : <Editor />}
+        {isDir || initialBodyString === undefined ? (
+          <Fallback />
+        ) : (
+          <Editor
+            onChange={handleChangeBodyString}
+            initialValue={initialBodyString}
+          />
+        )}
 
         {/* <Editor/> */}
 

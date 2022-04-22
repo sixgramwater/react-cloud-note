@@ -52,7 +52,11 @@ function App() {
         <Route path="/" element={isAuth ? <Layout/> : <Navigate to='/login'/>}>
           {/* <Route path=":" */}
           <Route index element={<ListDetail />}></Route>
-          <Route path="recent" element={<RecentListDetail/>}>
+          <Route path="recent" element={<RecentListDetail type='recent'/>}>
+            <Route index element={<Fallback hasBorder/>}/>
+            <Route path=":fileType/:fileId" element={<Detail/>} />
+          </Route>
+          <Route path="star" element={<RecentListDetail type='star'/>}>
             <Route index element={<Fallback hasBorder/>}/>
             <Route path=":fileType/:fileId" element={<Detail/>} />
           </Route>

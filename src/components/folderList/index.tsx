@@ -12,6 +12,7 @@ export type EntryType = {
   type: number,
   created: number,
   fileId: string,
+  star: boolean,
 }
 
 const FolderList: React.FC<IFolerListProps> = (props) => {

@@ -65,6 +65,9 @@
     .filemore {
       display: flex;
     }
+    .fileStar {
+      display: none;
+    }
   }
 
   .dateSize {
@@ -103,5 +106,12 @@
       //   line
       // }
     }
+  }
+}
+
+.inputForm {
+  .input {
+    outline: none;
+    border: 1px solid #5b89fe;
   }
 }

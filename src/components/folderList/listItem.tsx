@@ -16,6 +16,9 @@ import TitleInput from "./titleInput";
 import { message } from "antd";
 import { useAppDispatch } from "../../hooks";
 
+export interface listItemProps extends EntryType {
+  highlightText?: string;
+}
 type EntryType = {
   name: string;
   dir: boolean;
@@ -40,8 +43,8 @@ const typeToName = [
   },
 ];
 
-const ListItem: React.FC<EntryType> = (props) => {
-  const { name, dir, type, fileId, created, star } = props;
+const ListItem: React.FC<listItemProps> = (props) => {
+  const { name, dir, type, fileId, created, star, highlightText } = props;
   const { entryId, fileId: fId } = useParams();
   const { pathname } = useLocation();
   const firstPath = pathname.split("/")[1] ?? "";
@@ -127,6 +130,29 @@ const ListItem: React.FC<EntryType> = (props) => {
       });
   };
 
+  const highLight = () => {
+    if (!highlightText || highlightText === "") return name;
+    return name.replace(new RegExp(highlightText, "gi"), (match) => {
+      return `<span class="${styles.highlight}">${match}</span>`;
+    });
+  };
+
+  // const renderName = () => {
+  //   if (!highlightText || highlightText === "") return name;
+    
+  //   // const reg = new RegExp(name, 'ig');
+  //   // const matched = [...name.matchAll(reg) as any];
+  //   const splited = name.split(highlightText);
+  //   const hightlighted = (
+  //     <span className={styles.highlight}>{highlightText}</span>
+  //   );
+
+  //   // let node;
+  //   // splited.forEach(item => {
+  //   //   node
+  //   // })
+  //   return <span>{splited[0]}</span>;
+  // };
   const handleCloseMenu = () => {
     setShowMenu(false);
   };
@@ -154,7 +180,7 @@ const ListItem: React.FC<EntryType> = (props) => {
           {showInput ? (
             <TitleInput defaultValue={name} onBlur={handleModifyName} />
           ) : (
-            name
+            <span dangerouslySetInnerHTML={{__html: highLight()}}></span>
             // <span onClick={handleShowTitle}>{name}</span>
           )}
           {/* {name} */}

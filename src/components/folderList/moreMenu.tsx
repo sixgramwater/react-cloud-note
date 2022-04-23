@@ -6,7 +6,7 @@ import cx from "classnames";
 import Portal from "../portal";
 import { useClickOutside } from "../../hooks";
 import { EntryType } from ".";
-import { starFile } from "../../api";
+import { deleteFile, starFile } from "../../api";
 import { message } from "antd";
 import { useDispatch } from "react-redux";
 
@@ -16,12 +16,13 @@ export interface MoreMenuProps {
   className?: string;
   onClickOutside?: () => void;
   entryItem?: EntryType;
-  onClose?: ()=>void;
-  onRename?: ()=>void;
+  onClose?: () => void;
+  onRename?: () => void;
   // onSelect: (key: string) => void;
 }
 const MoreMenu: React.FC<MoreMenuProps> = (props) => {
-  const { style, className, onClickOutside, entryItem, onClose, onRename } = props;
+  const { style, className, onClickOutside, entryItem, onClose, onRename } =
+    props;
   const ref = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   useClickOutside(ref, () => {
@@ -30,7 +31,7 @@ const MoreMenu: React.FC<MoreMenuProps> = (props) => {
   const handleRename = () => {
     onRename && onRename();
     // onClose && onClose();
-  }
+  };
   // const handleSelect = (key: string) => {
   //   // onSelect && onSelect(key);
   // }
@@ -39,19 +40,32 @@ const MoreMenu: React.FC<MoreMenuProps> = (props) => {
     const { fileId, star } = entryItem;
     starFile(fileId, true)
       .then((res) => {
-        onClose && onClose()
+        onClose && onClose();
         dispatch({
-          type: 'app/updateCurEntryList',
+          type: "app/updateCurEntryList",
           payload: {
             fileId,
-            star: true
-          }
-        })
+            star: true,
+          },
+        });
         message.success("收藏成功");
       })
       .catch((err) => {
         message.error("收藏失败");
       });
+  };
+  const handleDelete = () => {
+    if(!entryItem)  return;
+    const { fileId } = entryItem;
+    deleteFile(fileId).then(value => {
+      dispatch({
+        type: 'app/removeCurEntryList',
+        payload: fileId,
+      })
+      message.success('删除成功');
+    }).catch(err=>{
+      message.error('删除失败');
+    })
   };
 
   const handleUnstar = () => {
@@ -59,15 +73,15 @@ const MoreMenu: React.FC<MoreMenuProps> = (props) => {
     const { fileId, star } = entryItem;
     starFile(fileId, false)
       .then((res) => {
-        onClose && onClose()
+        onClose && onClose();
 
         dispatch({
-          type: 'app/updateCurEntryList',
+          type: "app/updateCurEntryList",
           payload: {
             fileId,
-            star: false
-          }
-        })
+            star: false,
+          },
+        });
         message.success("取消收藏成功");
       })
       .catch((err) => {
@@ -91,7 +105,7 @@ const MoreMenu: React.FC<MoreMenuProps> = (props) => {
           <div className={styles.menuItem} onClick={handleRename}>
             <span>重命名</span>
           </div>
-          <div className={styles.menuItem}>
+          <div className={styles.menuItem} onClick={handleDelete}>
             <span>删除</span>
           </div>
           {!entryItem?.star ? (
@@ -103,7 +117,7 @@ const MoreMenu: React.FC<MoreMenuProps> = (props) => {
               <span>取消加星</span>
             </div>
           )}
-          
+
           <div className={styles.menuItem}>
             <span>置顶</span>
           </div>

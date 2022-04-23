@@ -1,3 +1,7 @@
+:root {
+  --primary-color: #5b89fe;
+}
+
 #root {
   height: 100%;
 }

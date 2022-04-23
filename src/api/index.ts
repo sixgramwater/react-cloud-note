@@ -44,6 +44,12 @@ export const fetchRecent = () =>
 
 export const fetchStar = () => ins.get("/file/star").then((res) => res.data);
 
+export const deleteFile = (fileId: string) =>
+  ins.delete(`/file/${fileId}`).then((res) => res.data);
+
+export const searchFile = (keywords: string) =>
+  ins.get("/file/search", { params: { keywords } }).then((res) => res.data);
+
 type entryType = {
   type: number;
   fileId: string;

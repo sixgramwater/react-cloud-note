@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.5",
+    "@types/react-custom-scrollbars": "^4.0.10",
     "@types/uuid": "^8.3.4"
   }
 }

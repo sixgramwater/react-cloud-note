@@ -84,6 +84,24 @@ const appSlice = createSlice({
     },
     addCurEntryList(state, action) {
       state.curEntryList.push(action.payload);
+    },
+    removeCurEntryList(state, action) {
+      const fileId = action.payload;
+      state.curEntryList = state.curEntryList.filter(entry => entry.fileId !== fileId);
+
+    },
+    updateCurEntryList(state, action) {
+      const { fileId } = action.payload;
+      const entryItemIndex = state.curEntryList.findIndex(item => item.fileId === fileId);
+      if(entryItemIndex === -1) {
+        return;
+      } else {
+        const item = state.curEntryList[entryItemIndex];
+        state.curEntryList[entryItemIndex] = {
+          ...item,
+          ...action.payload,
+        }
+      }
     }
   }
 })

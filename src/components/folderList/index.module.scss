@@ -44,6 +44,9 @@
       // font-size: 16px;
       flex: 1;
       padding-left: 10px;
+      .highlight {
+        background-color: #f8dca3;
+      }
     }
 
     .filemore {
@@ -64,6 +67,9 @@
     background-color: #f4f6f7;
     .filemore {
       display: flex;
+    }
+    .fileStar {
+      display: none;
     }
   }
 
@@ -103,5 +109,12 @@
       //   line
       // }
     }
+  }
+}
+
+.inputForm {
+  .input {
+    outline: none;
+    border: 1px solid #5b89fe;
   }
 }

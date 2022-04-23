@@ -39,6 +39,17 @@ export const fetchEntryById = (entryId: string) =>
 export const fetchUserProfile = () =>
   ins.get(`/users/profile`).then((res) => res.data);
 
+export const fetchRecent = () =>
+  ins.get("/file/recent").then((res) => res.data);
+
+export const fetchStar = () => ins.get("/file/star").then((res) => res.data);
+
+export const deleteFile = (fileId: string) =>
+  ins.delete(`/file/${fileId}`).then((res) => res.data);
+
+export const searchFile = (keywords: string) =>
+  ins.get("/file/search", { params: { keywords } }).then((res) => res.data);
+
 type entryType = {
   type: number;
   fileId: string;
@@ -58,9 +69,12 @@ export const createEntryItem = ({
     .post(`/file`, { type, fileId, name, parentId, dir })
     .then((res) => res.data);
 
-export const updateEntryName = () => {
-  
-}
+export const updateEntryName = (fileId: String, name: string) =>
+  ins
+    .patch(`/file/${fileId}`, {
+      name,
+    })
+    .then((res) => res.data);
 
 export const createFile = (
   name: string,
@@ -91,3 +105,6 @@ export const syncFileDownload = (fileId: string) =>
       fileId,
     })
     .then((res) => res.data);
+
+export const starFile = (fileId: string, star: boolean) =>
+  ins.post("/file/star", { fileId, star }).then((res) => res.data);

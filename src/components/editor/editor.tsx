@@ -23,6 +23,8 @@ import Preview from "./previewer";
 import { commandList } from "./command";
 import { imageUpload } from "../../api";
 import cx from "classnames";
+import { v4 } from "uuid";
+import { message } from "antd";
 
 type cmInstance = ReturnType<typeof CodeMirror>;
 
@@ -48,9 +50,10 @@ export interface EditorProps {
   uploadImages?: (files: File[]) => Promise<any>;
   onChange?: (value: string) => void;
   placeholder?: string;
+  initialValue?: string;
 }
 const Editor: React.FC<EditorProps> = (props) => {
-  const { uploadImages, onChange, placeholder } = props;
+  const { uploadImages, onChange, placeholder, initialValue } = props;
   const editorRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   let cmRef = useRef<cmInstance>();
@@ -61,11 +64,20 @@ const Editor: React.FC<EditorProps> = (props) => {
   const editCalledRef = useRef<Boolean>(false);
   const previewCalledRef = useRef<Boolean>(false);
   const [editorHeight, setEditorHeight] = useState(400);
-  const [input, setInput] = useState(placeholder ?? mdValue);
+  const [input, setInput] = useState(initialValue ?? mdValue);
   const [activeTab, setActiveTab] = useState<"default" | "write" | "preview">(
     "default"
   );
 
+  useEffect(() => {
+    if(!cmRef.current)  return;
+    cmRef.current?.focus();
+    
+    cmRef.current?.setValue(initialValue??'');
+    setTimeout(()=>{
+      cmRef.current?.refresh();
+    },0)
+  }, [initialValue]);
   const editClass = cx(styles.mdEditor, {
     [styles.hide]: activeTab === "preview",
     [styles.full]: activeTab === "write",
@@ -124,19 +136,24 @@ const Editor: React.FC<EditorProps> = (props) => {
     console.log(file);
     const fileFormData = new FormData();
     fileFormData.append("file", file);
-    fileFormData.append("md5", Math.random().toFixed(8));
-    imageUpload(fileFormData).then((res) => {
-      if (res.code === "00000") {
-        console.log(res.data);
-        const fileUrl = `http://124.220.0.95:9999/document/${res.data.fileUrl}`;
-        const cursor = cmRef.current!.getCursor();
-        let { ch, line } = cursor;
-        cmRef.current!.setCursor({ ch: 0, line: line + 1 });
-        cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
-      } else {
-        console.log(res.msg);
-      }
-    });
+    fileFormData.append("md5", v4());
+    imageUpload(fileFormData)
+      .then((res) => {
+        if (res.code === "00000") {
+          console.log(res.data);
+          const fileUrl = `http://124.220.0.95:9999/document/${res.data.fileUrl}`;
+          const cursor = cmRef.current!.getCursor();
+          let { ch, line } = cursor;
+          cmRef.current!.setCursor({ ch: 0, line: line + 1 });
+          cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
+          message.success("图片上传成功");
+        } else {
+          console.log(res.msg);
+        }
+      })
+      .catch((err) => {
+        message.error("图片上传失败");
+      });
     // console.log(files);
     // imageUpload(itemList[0])
   };
@@ -144,19 +161,24 @@ const Editor: React.FC<EditorProps> = (props) => {
   const handleInsertPicture = (file: File) => {
     const fileFormData = new FormData();
     fileFormData.append("file", file);
-    fileFormData.append("md5", Math.random().toFixed(8));
-    imageUpload(fileFormData).then((res) => {
-      if (res.code === "00000") {
-        console.log(res.data);
-        const fileUrl = `http://124.220.0.95:9999/document/${res.data.fileUrl}`;
-        const cursor = cmRef.current!.getCursor();
-        let { ch, line } = cursor;
-        cmRef.current!.setCursor({ ch: 0, line: line + 1 });
-        cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
-      } else {
-        console.log(res.msg);
-      }
-    });
+    fileFormData.append("md5", v4());
+    imageUpload(fileFormData)
+      .then((res) => {
+        if (res.code === "00000") {
+          console.log(res.data);
+          const fileUrl = `http://124.220.0.95:9999/document/${res.data.fileUrl}`;
+          const cursor = cmRef.current!.getCursor();
+          let { ch, line } = cursor;
+          cmRef.current!.setCursor({ ch: 0, line: line + 1 });
+          cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
+          message.success("图片上传成功");
+        } else {
+          console.log(res.msg);
+        }
+      })
+      .catch((err) => {
+        message.error("图片上传失败");
+      });
   };
   const handleChangeActiveTab = (tab: "default" | "write" | "preview") => {
     setActiveTab(tab);
@@ -225,7 +247,7 @@ const Editor: React.FC<EditorProps> = (props) => {
     cmRef.current.scrollTo(0, leftRatio * (info.height - info.clientHeight));
     previewCalledRef.current = true;
   }, 0);
-  const updateBlockPostiton = throttleByTimestamp(() => {
+  const updateBlockPostiton = throttle(() => {
     if (!cmRef.current || !previewRef.current || !hastRef.current) return;
 
     posRef.current = {
@@ -484,7 +506,7 @@ const Editor: React.FC<EditorProps> = (props) => {
   useLayoutEffect(() => {
     if (!editorRef.current) return;
     cmRef.current = CodeMirror(editorRef.current, {
-      value: mdValue,
+      value: '',
       mode: "markdown",
       lineWrapping: true,
       tabSize: 4,

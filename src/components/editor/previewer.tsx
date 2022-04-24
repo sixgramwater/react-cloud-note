@@ -19,7 +19,7 @@ export interface PreviewProps {
 }
 hljs.registerLanguage('javascript', javascript);
 
-const Preview: React.FC<PreviewProps> = (props) => {
+const Preview: React.FC<PreviewProps> = React.memo((props) => {
   const { value, style, onHast } = props;
   // const [parsedStr, setParsedStr] = useState('');
   const preRef = useRef<HTMLDivElement>(null);
@@ -78,6 +78,6 @@ const Preview: React.FC<PreviewProps> = (props) => {
     <div className={cx(styles.mdContent, 'markdown-body')} ref={preRef} dangerouslySetInnerHTML={{__html: `${html}`}}></div>
     // </div>
   )
-}
+})
 
 export default Preview;

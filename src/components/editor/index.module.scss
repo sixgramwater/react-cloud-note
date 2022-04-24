@@ -1,16 +1,14 @@
 // @import 'codemirror/lib/codemirror.css';
 
-
 .md {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
   overflow: hidden;
-  
+
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
     sans-serif, Apple Color Emoji, Segoe UI Emoji;
-  
 
   .mdToolbar {
     padding: 4px 12px;
@@ -88,9 +86,46 @@
       width: 100%;
     }
   }
-
-
 }
+
+.toc {
+  ul {
+    padding: 12px;
+  }
+  li {
+    padding: 2px 20px 2px 4px;
+    list-style: none;
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 2;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all ease 200ms;
+    &:hover {
+      background-color: #f0f3f5;
+    }
+    &.active {
+      color: var(--primary-color);
+      background-color: #f0f3f5;
+
+    }
+  }
+
+  &.active {
+    color: var(--primary-color);
+    // background-color: #f0f3f5;
+    // background-color: $gray-100;
+  }
+  &-first {
+    font-weight: 500;
+  }
+}
+// .toc {
+//   background-color: #fff;
+
+// }
 
 :global {
   .ant-tooltip {
@@ -100,7 +135,7 @@
       border-radius: 4px;
     }
     .ant-tooltip-arrow-content {
-      --antd-arrow-background-color: rgba(0, 0, 0, 0.85)
+      --antd-arrow-background-color: rgba(0, 0, 0, 0.85);
     }
   }
 }

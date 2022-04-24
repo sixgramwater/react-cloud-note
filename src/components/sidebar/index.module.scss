@@ -20,6 +20,7 @@
       height: 60px;
       display: flex;
       justify-content: center;
+      position: relative;
       // width: 60px;
 
       .avatar {
@@ -27,6 +28,7 @@
         width: 60px;
         overflow: hidden;
         border-radius: 30px;
+        cursor: pointer;
         img {
           width: 100%;
           height: 100%;
@@ -97,9 +99,13 @@
   z-index: 9999;
   opacity: 0;
   display: none;
+  transition: all ease 200ms;
   &.show {
     opacity: 1;
     display: flex;
+  }
+  &.personal {
+    top: 64px;
   }
   .menu {
     // transform: translateX(50%);

@@ -49,11 +49,12 @@ export interface PosRefType {
 export interface EditorProps {
   uploadImages?: (files: File[]) => Promise<any>;
   onChange?: (value: string) => void;
+  onSave?: () => void;
   placeholder?: string;
   initialValue?: string;
 }
 const Editor: React.FC<EditorProps> = (props) => {
-  const { uploadImages, onChange, placeholder, initialValue } = props;
+  const { uploadImages, onChange, placeholder, initialValue, onSave } = props;
   const editorRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   let cmRef = useRef<cmInstance>();
@@ -68,7 +69,11 @@ const Editor: React.FC<EditorProps> = (props) => {
   const [activeTab, setActiveTab] = useState<"default" | "write" | "preview">(
     "default"
   );
+  // const map = {
+  //   "Ctrl-S": () => {
 
+  //   }
+  // }
   useEffect(() => {
     if(!cmRef.current)  return;
     cmRef.current?.focus();
@@ -136,7 +141,7 @@ const Editor: React.FC<EditorProps> = (props) => {
     console.log(file);
     const fileFormData = new FormData();
     fileFormData.append("file", file);
-    fileFormData.append("md5", v4());
+    fileFormData.append("md5", v4().replaceAll('-',''));
     imageUpload(fileFormData)
       .then((res) => {
         if (res.code === "00000") {
@@ -157,11 +162,14 @@ const Editor: React.FC<EditorProps> = (props) => {
     // console.log(files);
     // imageUpload(itemList[0])
   };
-
+  const handleSave = () => {
+    onSave && onSave();
+    // console.log('save');
+  }
   const handleInsertPicture = (file: File) => {
     const fileFormData = new FormData();
     fileFormData.append("file", file);
-    fileFormData.append("md5", v4());
+    fileFormData.append("md5", v4().replaceAll('-',''));
     imageUpload(fileFormData)
       .then((res) => {
         if (res.code === "00000") {
@@ -525,6 +533,13 @@ const Editor: React.FC<EditorProps> = (props) => {
       // throttleUpdateFn(ins.getValue())();
       // console.log(ins);
     });
+
+    cmRef.current.addKeyMap({
+      "Ctrl-S": () => {
+        handleSave();
+      }
+    })
+
   }, []);
 
   useEffect(() => {

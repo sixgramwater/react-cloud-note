@@ -1,7 +1,9 @@
 import axios from "axios";
 import { getAccessToken } from "../utils";
 
-const baseURL = 'http://localhost:4000'
+// const baseURL = 'http://localhost:4000'
+const baseURL = 'http://124.220.0.95:4000'
+
 
 const ins = axios.create({
   // timeout: 3000,

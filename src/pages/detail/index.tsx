@@ -153,6 +153,7 @@ const Detail = () => {
           <Editor
             onChange={handleChangeBodyString}
             initialValue={initialBodyString}
+            onSave={handleSave}
           />
         )}
 

@@ -61,10 +61,10 @@ const Nav = () => {
           titleRender={titleRender}
         />
       </div>
-      <div className={styles.navItem}>
+      {/* <div className={styles.navItem}>
         <AiOutlineDelete className={styles.icon}/>
         <div className={styles.navItemContent}>回收站</div>
-      </div>
+      </div> */}
       {/* <div className={styles.navItem}> */}
         
       {/* </div> */}

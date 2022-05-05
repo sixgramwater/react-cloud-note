@@ -1,3 +1,4 @@
+import { HamburgerButton } from "@icon-park/react";
 import React, {
   useCallback,
   useEffect,
@@ -12,8 +13,10 @@ import { fetchEntryById, syncFileDownload } from "../../api";
 import Preview from "../../components/editor/previewer";
 import Toc from "../../components/editor/toc";
 import Scroll from "../../components/scroll";
+import { useMediaQuery } from "../../hooks";
 import { findStartIndex, throttleByTimestamp } from "../../utils";
 import styles from "./index.module.scss";
+import cx from "classnames";
 
 const SharePage = () => {
   const { fileId } = useParams();
@@ -25,6 +28,9 @@ const SharePage = () => {
   const previewPos = useRef<number[]>([]);
   const [curBlockIndex, setCurBlockIndex] = useState(0);
   const [tocLeft, setTocLeft] = useState(0);
+  const [showMenu, setShowMenu] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 960px)");
+  const isMobile = !isDesktop;
   useEffect(() => {
     if (!fileId) return;
     fetchEntryById(fileId).then((value) => {
@@ -127,12 +133,25 @@ const SharePage = () => {
     }, 0);
     // console.log()
   }, []);
-
+  const mobileAsideClass = cx(styles.mobileAside, {
+    [styles.show]: showMenu
+  })
+  const handleShowMobileMenu = () => {
+    setShowMenu(show => !show);
+  }
+  // const pageHeaderClass =
   return (
     <div className={styles.sharePage}>
       <div className={styles.bg}></div>
       <div className={styles.pageHeader}>
+        {
+          isMobile &&
+          <div className={styles.mobileMenu} onClick={handleShowMobileMenu}>
+            <HamburgerButton theme="outline" size="24" fill="#4e5a70" />
+          </div>
+        }
         <div className={styles.title}>{title}</div>
+        <div className={styles.avatar}></div>
       </div>
       <div className={styles.pageContent}>
         <Scroll onScroll={handleScroll}>
@@ -144,15 +163,30 @@ const SharePage = () => {
               </div>
               {/* </Scroll> */}
             </div>
-            <div className={styles.asideContainer}>
-              <div className={styles.tocContainer}>
-                <Toc
-                  hast={hast}
-                  currentBlockIndex={curBlockIndex}
-                  onClick={handleClick}
-                />
+            {isMobile && (
+              <div className={mobileAsideClass}>
+                <div className={styles.mobileToc}>
+                  <Toc
+                    hast={hast}
+                    currentBlockIndex={curBlockIndex}
+                    onClick={handleClick}
+                  />
+                </div>
+                {/* <div className={styles.mask}></div> */}
+
               </div>
-            </div>
+            )}
+            {isDesktop && (
+              <div className={styles.asideContainer}>
+                <div className={styles.tocContainer}>
+                  <Toc
+                    hast={hast}
+                    currentBlockIndex={curBlockIndex}
+                    onClick={handleClick}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </Scroll>
       </div>

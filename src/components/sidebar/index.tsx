@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./index.module.scss";
 import Nav from "../sidebar-nav";
 import { FiPlus } from "react-icons/fi";
@@ -103,6 +103,8 @@ const Sidebar = () => {
   const location = useLocation();
   const btnRef = useRef<HTMLDivElement>(null);
   const curEntryItem = useAppSelector((state) => state.app.curEntryItem);
+  const [mouseDown, setMouseDown] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(240);
   // const curEntryList = useAppSelector(state=>state.app.curEntryList)
   const avatarImg =
     "http://124.220.0.95:9999/document/2022/04/18/ad6ac38e61485a0679f1b36edd0b254c.png";
@@ -112,6 +114,16 @@ const Sidebar = () => {
 
     // console.log(entryId);
   };
+  // useEffect(() => {
+  //   const mousemove = (e:MouseEvent) => handleMouseMove(e)
+  //   document.addEventListener('mousemove', e=>mousemove(e))
+  //   document.addEventListener('mouseup', handleMouseUp)
+  //   return () => {
+  //     document.removeEventListener('mousemove', mousemove)
+  //     document.removeEventListener('mouseup', handleMouseUp)
+  //   }
+  // }, [])
+  
   const handleClickAvatar = () => {
     setTimeout(() => {
       setShowModal(true);
@@ -173,6 +185,7 @@ const Sidebar = () => {
 
   const handleSelect = (type: number) => {
     console.log(type);
+    setShowCreateMenu(false);
     if (type === 0) {
       handleCreateFolder();
     } else if (type === 2) {
@@ -192,8 +205,25 @@ const Sidebar = () => {
       })
     }
   };
+
+  const handleMouseDown = () => {
+    setMouseDown(true);
+  }
+
+  const handleMouseUp = () => {
+    setMouseDown(false);
+  }
+
+  const handleMouseMove = (e: React.MouseEvent | MouseEvent) => {
+    if(!mouseDown)  return;
+    setSidebarWidth(e.clientX);
+    // console.log()
+    // console.log(e.clientX);
+    
+  }
+
   return (
-    <div className={styles.sidebar}>
+    <div className={styles.sidebar} style={{width: `${sidebarWidth}px`}} >
       <div className={styles.sidebarInner}>
         <div className={styles.siderHeader}>
           <div className={styles.personalContainer}>
@@ -228,6 +258,12 @@ const Sidebar = () => {
             <Nav />
           </div>
           <div className={styles.footer}></div>
+        </div>
+        <div className={styles.collapseLayout}>
+
+        </div>
+        <div className={styles.dragLine} onMouseDown={handleMouseDown} onMouseMove={e=>handleMouseMove(e)} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>
+
         </div>
       </div>
     </div>

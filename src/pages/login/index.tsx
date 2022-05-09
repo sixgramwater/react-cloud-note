@@ -26,6 +26,7 @@ const Login = () => {
       })
       message.success('登录成功');
       localStorage.setItem('token', user.access_token);
+      localStorage.setItem('token_expires', JSON.stringify(Date.now() + 30000000));
       dispatch({
         type: 'app/setToken',
         payload: user.access_token,
@@ -35,7 +36,8 @@ const Login = () => {
       }, 100)
       // navigate('/');
       
-    }).catch(() => {
+    }).catch((err) => {
+      console.log(err);
       message.error('用户名或密码错误');
       setLoading(false);
     })

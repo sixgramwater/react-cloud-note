@@ -5,7 +5,7 @@ import ins from "./axios";
 export const imageUpload = (file: FormData) =>
   ins
     .post("/uploader/single", file, {
-      baseURL: "http://124.220.0.95:8080/api",
+      baseURL: "124.220.0.95:8080/api",
     })
     .then((value) => value.data);
 

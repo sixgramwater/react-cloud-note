@@ -1,8 +1,9 @@
 import axios from "axios";
 import { getAccessToken } from "../utils";
 
-// const baseURL = 'http://localhost:4000'
-const baseURL = 'http://124.220.0.95:4000'
+const baseURL = 'http://localhost:4000'
+// const baseURL = 'http://124.220.0.95:4000'
+// const baseURL = 'https://api.cloudwhite.xyz'
 
 
 const ins = axios.create({
@@ -14,9 +15,18 @@ const ins = axios.create({
 })
 
 ins.interceptors.request.use((config) => {
-  config.headers!.Authorization = `Bearer ${localStorage.getItem('token')}`
+  const token = localStorage.getItem('token');
+  const expires = localStorage.getItem('token_expires');
+  if(token) {
+    if(expires && Number(expires) < Date.now()) {
+      console.log('exp')
+      // localStorage.removeItem('token');
+    }
+    config.headers!.Authorization = `Bearer ${token}`
+  }
   return config;
 })
+
 // ins.interceptors.response.use((res) => {
   
 // }, (err) => {

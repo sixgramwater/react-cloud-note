@@ -33,10 +33,14 @@
         }
       }
     }
+    .btn {
+      padding: 2px 15px;
+    }
     .btnContainer {
       display: flex;
       align-items: center;
       margin-left: auto;
+      
     }
     .toolbarContainer {
       display: flex;
@@ -67,4 +71,36 @@
   .content {
     flex: 1;
   }
+}
+
+.shareDialog {
+  display: flex;
+  flex-direction: column;
+  .shareLink {
+    padding: 10px 0;
+    input {
+      width: 100%;
+      padding: 0 12px;
+      line-height: 32px;
+      outline: none;
+      border: 1px solid #eceff4;
+      border-radius: 4px;
+      // outline: 1px solid gray;
+    }
+  }
+
+  .shareBtn {
+    display: flex;
+    margin-left: auto;
+    padding-top: 12px;
+    
+  }
+  
+}
+
+.loadingShare {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

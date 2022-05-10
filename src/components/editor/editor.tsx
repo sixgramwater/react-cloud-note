@@ -146,7 +146,7 @@ const Editor: React.FC<EditorProps> = (props) => {
       .then((res) => {
         if (res.code === "00000") {
           console.log(res.data);
-          const fileUrl = `https://static.cloudwhite.xyz/${res.data.fileUrl}`;
+          const fileUrl = `https://static.cloudwhite.xyz:444/${res.data.fileUrl}`;
           const cursor = cmRef.current!.getCursor();
           let { ch, line } = cursor;
           cmRef.current!.setCursor({ ch: 0, line: line + 1 });
@@ -174,7 +174,7 @@ const Editor: React.FC<EditorProps> = (props) => {
       .then((res) => {
         if (res.code === "00000") {
           console.log(res.data);
-          const fileUrl = `https://static.cloudwhite.xyz/${res.data.fileUrl}`;
+          const fileUrl = `https://static.cloudwhite.xyz:444/${res.data.fileUrl}`;
 
           // const fileUrl = `http://124.220.0.95:9999/document/${res.data.fileUrl}`;
           const cursor = cmRef.current!.getCursor();

@@ -107,7 +107,7 @@ const Sidebar = () => {
   const [sidebarWidth, setSidebarWidth] = useState(240);
   // const curEntryList = useAppSelector(state=>state.app.curEntryList)
   const avatarImg =
-    "https://static.cloudwhite.xyz/258eb93defba-4ec3-9036-8958321ea6b1.png";
+    "https://static.cloudwhite.xyz:444/258eb93defba-4ec3-9036-8958321ea6b1.png";
   const handleClickCreate = () => {
     const entryId = location.pathname.split("/")[1];
     setShowCreateMenu(true);

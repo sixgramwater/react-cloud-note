@@ -3,7 +3,9 @@ import ins from "./axios";
 // const baseUrl = "localhost:4000";
 
 export const imageUpload = (file: FormData) =>
-  ins.post("/upload", file).then((value) => value.data);
+  ins
+    .post("/upload", file)
+    .then((value) => value.data);
 
 export const login = (username: string, password: string) =>
   ins

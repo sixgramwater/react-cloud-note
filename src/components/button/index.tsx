@@ -5,6 +5,8 @@ import cx from 'classnames';
 export interface IButtonProps {
   onClick?: () => void;
   type?: 'default' | 'primary',
+  height?: number,
+  width?: number,
   children?: any
 }
 
@@ -12,6 +14,8 @@ const Button: React.FC<IButtonProps> = (props) => {
   const {
     onClick,
     type,
+    height,
+    width,
     children
   } = props;
   const handleClick = () => {
@@ -21,7 +25,7 @@ const Button: React.FC<IButtonProps> = (props) => {
     [styles.primary]: type === 'primary'
   })
   return (
-    <div className={btnClass} onClick={handleClick}>
+    <div className={btnClass} onClick={handleClick} style={{height: `${height}px`, width: `${width}px`}}>
       <span>{children}</span>
     </div>
   )

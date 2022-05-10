@@ -33,6 +33,10 @@ const TitleInput: React.FC<ITitleInputProps> = (props) => {
       <form className={styles.inputForm}>
         <input 
           type="text" 
+          style={{
+            outline: 'none',
+            // border: '0',
+          }}
           // value={input} 
           className={styles.input}
           onChange={handleChange}

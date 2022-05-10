@@ -39,7 +39,15 @@ ins.interceptors.request.use((config) => {
 //         localStorage.removeItem('token')
 //     }
 //   }
+<<<<<<< HEAD
 
 // })
 
 export default ins;
+=======
+  
+// })
+
+export default ins;
+
+>>>>>>> 467be41555e74d489073ea1c2389ae9c12ab6b7c

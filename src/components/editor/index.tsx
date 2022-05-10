@@ -1,10 +1,5 @@
-import React from 'react';
-import styles from './index.module.scss';
+// import React from 'react';
+// import styles from './index.module.scss';
+import Editor from './editor';
 
-export function Editor() {
-  return (
-    <div className={styles.editorContainer}>
-      
-    </div>
-  )
-}
+export default Editor;

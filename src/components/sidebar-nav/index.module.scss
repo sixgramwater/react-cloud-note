@@ -15,11 +15,13 @@
     align-items: center;
     font-size: 18px;
     transition: background-color 0.2s ease;
-      &:hover {
-        background: #f0f3f5;
-      }
+    &.active {
+      color: #5b89fe;
+    }
+    &:hover {
+      background: #f0f3f5;
+    }
     .icon {
-      
       vertical-align: middle;
       // line-height: 36px;
       display: flex;
@@ -35,7 +37,6 @@
       display: flex;
       align-items: center;
       min-width: 0;
-      
     }
   }
 
@@ -49,7 +50,9 @@
       align-items: center;
       width: 100%;
       // font-size: 18px;
-
+      &.active {
+        color: #5b89fe;
+      }
       .icon {
         vertical-align: middle;
         font-size: 18px;
@@ -70,7 +73,7 @@
         width: 100%;
       }
       // &:hover {
-        
+
       // }
     }
   }
@@ -101,10 +104,13 @@
       }
       transition: 200ms background-color ease;
       &.ant-tree-treenode-selected {
-        background-color: #f0f3f5 !important;
+        // background-color: #f0f3f5 !important;
+        background-color: #f9fafb !important;
         // color: #5b89fe;
         .ant-tree-node-selected {
-          background-color: #f0f3f5 !important;
+          // background-color: #f0f3f5 !important;
+        background-color: #f9fafb !important;
+
           .ant-tree-title {
             color: #5b89fe;
           }
@@ -112,9 +118,5 @@
         }
       }
     }
-    
   }
-
-  
 }
-

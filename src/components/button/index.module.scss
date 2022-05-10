@@ -1,9 +1,10 @@
 .btn {
   line-height: 28px;
+  padding: 4px 15px;
   text-align: center;
   overflow: hidden;
-  width: 60px;
-  height: 28px;
+  // width: 60px;
+  // height: 28px;
   cursor: pointer;
   border-radius: 4px;
   background-color: #f0f3f5;
@@ -23,5 +24,12 @@
       background-color: #7098fe;
     }
   }
+  .buttonLoading {
+    width: 60px;
+  }
   // padding: ;
+
+  &+& {
+    margin-left: 10px;
+  }
 }

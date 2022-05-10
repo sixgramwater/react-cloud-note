@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from './hooks';
 import Login from './pages/login';
 import Fallback from './pages/fallback';
 import RecentListDetail from './pages/listDetail/recentListDetail';
+import SharePage from './pages/share';
 
 // const Login = () => {
 //   return (
@@ -27,6 +28,9 @@ function App() {
   const navigate = useNavigate();
   const token = useAppSelector(state=>state.app.userToken);
   const isAuth = token != null;
+  // useEffect(()=>{
+
+  // }, [token])
   // const user = useAppSelector(state => state.app.user);
   // const dispatch
   // useEffect(() => {
@@ -48,7 +52,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/login" element={<Login/>}/>
-        
+        <Route path="/share/:fileId" element={<SharePage/>}></Route>
         <Route path="/" element={isAuth ? <Layout/> : <Navigate to='/login'/>}>
           {/* <Route path=":" */}
           <Route index element={<ListDetail />}></Route>

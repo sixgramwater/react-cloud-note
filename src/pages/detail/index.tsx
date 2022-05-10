@@ -8,20 +8,87 @@ import { AiOutlineMore } from "react-icons/ai";
 import Fallback from "../fallback";
 import Editor from "../../components/editor";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { fetchEntryById, syncFileDownload, syncFilePush, updateEntryName } from "../../api";
+import {
+  fetchEntryById,
+  syncFileDownload,
+  syncFilePush,
+  updateEntryName,
+} from "../../api";
 import { entryItem } from "../../store/appSlice";
-import { message } from "antd";
+import { message, Modal } from "antd";
+import DotLoader from "../../components/loader";
+
+interface shareModalProps {
+  fileId: string;
+  visible?: boolean;
+  handleClose?: () => void;
+}
+const ShareModal: React.FC<shareModalProps> = (props) => {
+  const { fileId, visible = false, handleClose } = props;
+  const link = `https://react-cloud-note.vercel.com/share/${fileId}`;
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(true);
+  const handleStopShare = () => {
+    handleClose && handleClose();
+    setLoading(true);
+  };
+  const handlePaste = () => {
+    navigator.clipboard.writeText(link).then(() => {
+      message.success("成功复制到剪贴板");
+    });
+  };
+  useEffect(() => {
+    if(!visible)  return;
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [visible]);
+  return (
+    <Modal visible={visible} title="分享" onCancel={handleClose} footer={null}>
+      {/* <div className={styles.loadingShare}>
+          {loading}
+          <DotLoader />
+        </div> */}
+      {loading ? (
+        <div className={styles.loadingShare}>
+          {/* loading */}
+          <DotLoader />
+        </div>
+      ) : (
+        <div className={styles.shareDialog}>
+          <div className={styles.shareLink}>
+            <input
+              type="text"
+              readOnly
+              onClick={() => inputRef.current?.select()}
+              ref={inputRef}
+              value={link}
+            />
+          </div>
+          <div className={styles.shareBtn}>
+            <Button onClick={handleStopShare}>停止分享</Button>
+            <Button type="primary" onClick={handlePaste}>
+              复制链接
+            </Button>
+          </div>
+        </div>
+      )}
+    </Modal>
+  );
+};
 
 const Detail = () => {
   const { fileId, fileType } = useParams();
   const [currentEntryItem, setCurrentEntryItem] = useState<entryItem>();
   const dispatch = useAppDispatch();
   const [showInput, setShowInput] = useState(false);
+  const [showShareDialog, setShowShareDialog] = useState(false);
   const bodyStringRef = useRef<string | null>();
-  const curEntryList = useAppSelector(state=>state.app.curEntryList);
+  const curEntryList = useAppSelector((state) => state.app.curEntryList);
   const [initialBodyString, setInitialBodyString] = useState<
     string | undefined
   >();
+  const [saveLoading, setSaveLoading] = useState(false);
   // const [fileLoading, setFileLoading] = useState(false);
   useEffect(() => {
     if (!fileId || !fileType) return;
@@ -38,7 +105,7 @@ const Detail = () => {
 
   useEffect(() => {
     if (!fileId) return;
-    const item = curEntryList.find(item => item.fileId === fileId);
+    const item = curEntryList.find((item) => item.fileId === fileId);
     setCurrentEntryItem(item);
     // fetchEntryById(fileId)
     //   .then((value) => {
@@ -71,42 +138,55 @@ const Detail = () => {
 
   const handleModifyTitle = (value: string) => {
     setShowInput(false);
-    if(!fileId) return;
-    if(value === '') {
-      message.error('标题不能为空');
+    if (!fileId) return;
+    if (value === "") {
+      message.error("标题不能为空");
       return;
     }
     // console.log(value);
-    
-    updateEntryName(fileId, value).then(res => {
-      dispatch({
-        type: 'app/updateCurEntryList',
-        payload: {
-          fileId,
-          name: value
-        }
-      })
-      setFileName(value);
-      message.success('修改成功');
-    }).catch(err => {
-      message.error('修改失败');
-    })
-  };
 
+    updateEntryName(fileId, value)
+      .then((res) => {
+        dispatch({
+          type: "app/updateCurEntryList",
+          payload: {
+            fileId,
+            name: value,
+          },
+        });
+        setFileName(value);
+        message.success("修改成功");
+      })
+      .catch((err) => {
+        message.error("修改失败");
+      });
+  };
+  const handleShowShare = () => {
+    setShowShareDialog(true);
+  };
   const handleChangeBodyString = useCallback((value: string) => {
     bodyStringRef.current = value;
   }, []);
 
   const handleSave = () => {
     if (!fileId || !bodyStringRef.current) return;
-    syncFilePush(fileId, bodyStringRef.current)
+    setSaveLoading(true);
+    setTimeout(()=>{
+      fun();
+    }, 1500)
+    const fun = () =>{
+      syncFilePush(fileId, bodyStringRef.current!)
       .then((value) => {
         console.log(value);
         message.success("保存成功");
+        setSaveLoading(false);
       })
       .catch((err) => {
         message.error("保存失败");
+        setSaveLoading(false);
       });
+    }
+    
   };
   const isDir = fileType === "dir";
   return (
@@ -129,14 +209,23 @@ const Detail = () => {
           </div>
         </div>
         <div className={styles.btnContainer}>
-          {!isDir && <Button onClick={handleSave}>保存</Button>}
+          {!isDir && <Button onClick={handleSave} className={styles.btn} loading={saveLoading} height={34}>保存</Button>}
 
           {/* <Button >
             保存
           </Button> */}
         </div>
         <div className={styles.toolbarContainer}>
-          <Button type="primary">分享</Button>
+          {fileId && (
+            <ShareModal
+              visible={showShareDialog}
+              fileId={fileId}
+              handleClose={() => setShowShareDialog(false)}
+            />
+          )}
+          <Button type="primary" onClick={handleShowShare} className={styles.btn}>
+            分享
+          </Button>
           <div className={styles.icons}>
             <i className={styles.iconMore}>
               <AiOutlineMore />
@@ -153,6 +242,7 @@ const Detail = () => {
           <Editor
             onChange={handleChangeBodyString}
             initialValue={initialBodyString}
+            onSave={handleSave}
           />
         )}
 

@@ -4,7 +4,7 @@ import { getAccessToken } from "../utils";
 const baseURL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:4000"
-    : "http://124.221.204.216:4000";
+    : "https://api.cloudwhite.xyz:444";
 
 // const baseURL = 'http://124.220.0.95:4000'
 // const baseURL = 'https://api.cloudwhite.xyz'

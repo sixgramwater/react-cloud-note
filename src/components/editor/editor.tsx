@@ -144,17 +144,13 @@ const Editor: React.FC<EditorProps> = (props) => {
     fileFormData.append("md5", v4().replaceAll('-',''));
     imageUpload(fileFormData)
       .then((res) => {
-        if (res.code === "00000") {
-          console.log(res.data);
+        console.log(res.data);
           const fileUrl = `https://static.cloudwhite.xyz:444/${res.data.fileUrl}`;
           const cursor = cmRef.current!.getCursor();
           let { ch, line } = cursor;
           cmRef.current!.setCursor({ ch: 0, line: line + 1 });
           cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
           message.success("图片上传成功");
-        } else {
-          console.log(res.msg);
-        }
       })
       .catch((err) => {
         message.error("图片上传失败");
@@ -172,19 +168,13 @@ const Editor: React.FC<EditorProps> = (props) => {
     fileFormData.append("md5", v4().replaceAll('-',''));
     imageUpload(fileFormData)
       .then((res) => {
-        if (res.code === "00000") {
-          console.log(res.data);
+        console.log(res.data);
           const fileUrl = `https://static.cloudwhite.xyz:444/${res.data.fileUrl}`;
-
-          // const fileUrl = `http://124.220.0.95:9999/document/${res.data.fileUrl}`;
           const cursor = cmRef.current!.getCursor();
           let { ch, line } = cursor;
           cmRef.current!.setCursor({ ch: 0, line: line + 1 });
           cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
           message.success("图片上传成功");
-        } else {
-          console.log(res.msg);
-        }
       })
       .catch((err) => {
         message.error("图片上传失败");

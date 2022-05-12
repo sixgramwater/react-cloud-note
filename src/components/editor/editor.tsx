@@ -75,13 +75,13 @@ const Editor: React.FC<EditorProps> = (props) => {
   //   }
   // }
   useEffect(() => {
-    if(!cmRef.current)  return;
+    if (!cmRef.current) return;
     cmRef.current?.focus();
-    
-    cmRef.current?.setValue(initialValue??'');
-    setTimeout(()=>{
+
+    cmRef.current?.setValue(initialValue ?? '');
+    setTimeout(() => {
       cmRef.current?.refresh();
-    },0)
+    }, 0)
   }, [initialValue]);
   const editClass = cx(styles.mdEditor, {
     [styles.hide]: activeTab === "preview",
@@ -141,16 +141,18 @@ const Editor: React.FC<EditorProps> = (props) => {
     console.log(file);
     const fileFormData = new FormData();
     fileFormData.append("file", file);
-    fileFormData.append("md5", v4().replaceAll('-',''));
+    fileFormData.append("md5", v4().replaceAll('-', ''));
     imageUpload(fileFormData)
       .then((res) => {
-        console.log(res.data);
-          const fileUrl = `https://static.cloudwhite.xyz:444/${res.data.fileUrl}`;
-          const cursor = cmRef.current!.getCursor();
-          let { ch, line } = cursor;
-          cmRef.current!.setCursor({ ch: 0, line: line + 1 });
-          cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
-          message.success("图片上传成功");
+        console.log(res);
+        const fileUrl = `https://static.cloudwhite.xyz:444/${res.filename}`;
+
+        // const fileUrl = `https://static.cloudwhite.xyz:444/${res.data.fileUrl}`;
+        const cursor = cmRef.current!.getCursor();
+        let { ch, line } = cursor;
+        cmRef.current!.setCursor({ ch: 0, line: line + 1 });
+        cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
+        message.success("图片上传成功");
       })
       .catch((err) => {
         message.error("图片上传失败");
@@ -165,16 +167,16 @@ const Editor: React.FC<EditorProps> = (props) => {
   const handleInsertPicture = (file: File) => {
     const fileFormData = new FormData();
     fileFormData.append("file", file);
-    fileFormData.append("md5", v4().replaceAll('-',''));
+    fileFormData.append("md5", v4().replaceAll('-', ''));
     imageUpload(fileFormData)
       .then((res) => {
-        console.log(res.data);
-          const fileUrl = `https://static.cloudwhite.xyz:444/${res.data.fileUrl}`;
-          const cursor = cmRef.current!.getCursor();
-          let { ch, line } = cursor;
-          cmRef.current!.setCursor({ ch: 0, line: line + 1 });
-          cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
-          message.success("图片上传成功");
+        // console.log(res.data);
+        const fileUrl = `https://static.cloudwhite.xyz:444/${res.filename}`;
+        const cursor = cmRef.current!.getCursor();
+        let { ch, line } = cursor;
+        cmRef.current!.setCursor({ ch: 0, line: line + 1 });
+        cmRef.current!.replaceSelection(`\n![img](${fileUrl})\n`);
+        message.success("图片上传成功");
       })
       .catch((err) => {
         message.error("图片上传失败");
@@ -201,13 +203,13 @@ const Editor: React.FC<EditorProps> = (props) => {
     const rightRatio =
       ((leftRatio - editPs[startIndex]) *
         (previewPs[startIndex + 1] - previewPs[startIndex])) /
-        (editPs[startIndex + 1] - editPs[startIndex]) +
+      (editPs[startIndex + 1] - editPs[startIndex]) +
       previewPs[startIndex];
     // console.log(rightRatio);
     previewRef.current!.scrollTo(
       0,
       rightRatio *
-        (previewRef.current!.scrollHeight - previewRef.current!.clientHeight)
+      (previewRef.current!.scrollHeight - previewRef.current!.clientHeight)
     );
     editCalledRef.current = true;
   }, 0);
@@ -217,7 +219,7 @@ const Editor: React.FC<EditorProps> = (props) => {
     updateBlockPostiton();
     curBlockIndexRef.current = findStartIndex(
       previewRef.current.scrollTop /
-        (previewRef.current.scrollHeight - previewRef.current.offsetHeight),
+      (previewRef.current.scrollHeight - previewRef.current.offsetHeight),
       posRef.current.previewPos
     );
 
@@ -235,8 +237,8 @@ const Editor: React.FC<EditorProps> = (props) => {
       ((rightRatio - posRef.current.previewPos[startIndex]) *
         (posRef.current.editPos[startIndex + 1] -
           posRef.current.editPos[startIndex])) /
-        (posRef.current.previewPos[startIndex + 1] -
-          posRef.current.previewPos[startIndex]) +
+      (posRef.current.previewPos[startIndex + 1] -
+        posRef.current.previewPos[startIndex]) +
       posRef.current.editPos[startIndex];
 
     if (isNaN(leftRatio)) {
